@@ -1,20 +1,50 @@
 package org.skypro.generating_questions.service;
 
 import org.skypro.generating_questions.model.Question;
+import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.*;
 
-public class JavaQuestionService implements QuestionService {
+@Service
+public class JavaQuestionService extends Question implements QuestionService {
     private Set<Question> questions;
+    private final Random random = new Random();
 
-    public void questionAdd(String question, String answer) {
-        Question q = new Question(question, answer);
-        questions.add(q);
+    public JavaQuestionService(String question, String answer) {
+        super(question, answer);
     }
 
-    public void questionAdd(Question question) {
-        questions.add(question);
+    private void addQuestion(String question, String answer) {
+        this.questions.add(new Question(question, answer));
     }
 
-    public void questionRemove(Question question) {}
+    @Override
+    public Question getRandomQuestion() {
+        if (questions.isEmpty()) {
+            throw new IllegalStateException("Список вопросов пуст.");
+        }
+        List<Question> listQuestions = new ArrayList<>(questions);
+
+        return listQuestions.get(random.nextInt(listQuestions.size()));
+    }
+
+    @Override
+    public void addQuestion(Question question) {
+
+    }
+
+    @Override
+    public void removeQuestion(Question question) {
+
+    }
+
+    @Override
+    public Collection<Question> getAllQuestions() {
+        return List.of();
+    }
+
+    @Override
+    public Collection<Question> getQuestions(int amount) {
+        return List.of();
+    }
 }
